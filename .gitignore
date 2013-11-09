@@ -1,6 +1,8 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+.idea
+*.iml
+target
+dao-jpa/src/main/generated/*
+*.classpath
+*.project
+*.settings
+test-output
