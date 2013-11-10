@@ -23,4 +23,13 @@ public interface UserService
      * @return true is the email address and password is a match
      */
     boolean checkPassword(String emailAddress, String password);
+
+    /**
+     * @param emailAddress The users email address
+     * @param oldPassword  The old password must be supplied for security reasons
+     * @param newPassword1 The new password
+     * @param newPassword2 Re-typed new password for validation
+     * @return A validation result with messages. If it contains errors, the password has not been changed.
+     */
+    ValidationResult changePassword(String emailAddress, String oldPassword, String newPassword1, String newPassword2);
 }

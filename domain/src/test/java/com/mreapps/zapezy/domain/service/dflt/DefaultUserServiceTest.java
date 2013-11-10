@@ -18,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -116,5 +117,61 @@ public class DefaultUserServiceTest
 
         boolean validPassword = defaultUserService.checkPassword(emailAddress, password);
         assertThat(validPassword).isFalse();
+    }
+
+    @Test
+    public void changePasswordWrongOldPassword()
+    {
+        String emailAddress = "user@zapezy.com";
+        String oldPassword = "oldPassword";
+        String newPassword1 = "newPassword";
+        String newPassword2 = "newPassword";
+
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setEncryptedPassword("uqqcJpViNetIZPfcUZ+7Ys8IxQoxNvXNvkb58uu+1RDoQZ+ufnyMaQ/LF6nKVQD8");
+        when(userRepository.findByEmailAddress(eq(emailAddress))).thenReturn(jpaUser);
+
+        ValidationResult validationResult = defaultUserService.changePassword(emailAddress, oldPassword, newPassword1, newPassword2);
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("old_password_is_wrong");
+    }
+
+    @Test
+    public void changePasswordNewPasswordError()
+    {
+        String emailAddress = "user@zapezy.com";
+        String oldPassword = "password";
+        String newPassword1 = "newPassword";
+        String newPassword2 = "newPassword2";
+
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setEncryptedPassword("uqqcJpViNetIZPfcUZ+7Ys8IxQoxNvXNvkb58uu+1RDoQZ+ufnyMaQ/LF6nKVQD8");
+        when(userRepository.findByEmailAddress(eq(emailAddress))).thenReturn(jpaUser);
+
+        ValidationResult validationResult = new DefaultValidationResult();
+        validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "dummy"));
+        when(passwordValidator.validatePasswords(anyString(), anyString())).thenReturn(validationResult);
+
+        validationResult = defaultUserService.changePassword(emailAddress, oldPassword, newPassword1, newPassword2);
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("dummy");
+    }
+
+    @Test
+    public void changePasswordSuccess()
+    {
+        String emailAddress = "user@zapezy.com";
+        String oldPassword = "password";
+        String newPassword1 = "newPassword";
+        String newPassword2 = "newPassword2";
+
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setEncryptedPassword("uqqcJpViNetIZPfcUZ+7Ys8IxQoxNvXNvkb58uu+1RDoQZ+ufnyMaQ/LF6nKVQD8");
+        when(userRepository.findByEmailAddress(eq(emailAddress))).thenReturn(jpaUser);
+
+        when(passwordValidator.validatePasswords(anyString(), anyString())).thenReturn(new DefaultValidationResult());
+
+        ValidationResult validationResult = defaultUserService.changePassword(emailAddress, oldPassword, newPassword1, newPassword2);
+        assertThat(validationResult.isOk()).isTrue();
     }
 }
