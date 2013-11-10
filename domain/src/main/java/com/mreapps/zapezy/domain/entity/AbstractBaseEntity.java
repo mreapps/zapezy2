@@ -1,5 +1,7 @@
 package com.mreapps.zapezy.domain.entity;
 
+import com.mreapps.zapezy.core.entity.BaseEntity;
+
 /**
  * Abstract interface for all domain entities
  */

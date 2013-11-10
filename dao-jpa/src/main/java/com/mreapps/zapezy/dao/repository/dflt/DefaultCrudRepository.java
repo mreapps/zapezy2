@@ -1,5 +1,6 @@
 package com.mreapps.zapezy.dao.repository.dflt;
 
+import com.mreapps.zapezy.core.entity.BaseEntity;
 import com.mreapps.zapezy.dao.repository.CrudRepository;
 
 import javax.persistence.EntityManager;
@@ -14,7 +15,7 @@ import java.util.List;
  * Default implementation for jpa repositories
  * @param <T> The entity the repository handles
  */
-public abstract class DefaultCrudRepository<T> implements CrudRepository<T>
+public abstract class DefaultCrudRepository<T extends BaseEntity> implements CrudRepository<T>
 {
     @PersistenceContext
     private EntityManager entityManager;

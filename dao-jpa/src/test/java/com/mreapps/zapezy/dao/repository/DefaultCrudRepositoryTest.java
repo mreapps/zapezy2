@@ -1,5 +1,6 @@
 package com.mreapps.zapezy.dao.repository;
 
+import com.mreapps.zapezy.core.entity.BaseEntity;
 import com.mreapps.zapezy.dao.repository.dflt.DefaultCrudRepository;
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class DefaultCrudRepositoryTest
         boolean caught = false;
         try
         {
-            new DefaultCrudRepository<String>()
+            new DefaultCrudRepository<DummyEntity>()
             {
                 public void findSingle()
                 {
@@ -29,9 +30,9 @@ public class DefaultCrudRepositoryTest
                 }
 
                 @Override
-                protected List<String> findMany(CriteriaQuery cq, int startPosition, int maxResult)
+                protected List<DummyEntity> findMany(CriteriaQuery cq, int startPosition, int maxResult)
                 {
-                    return Arrays.asList("1", "2", "3");
+                    return Arrays.asList(new DummyEntity(), new DummyEntity(), new DummyEntity());
                 }
             }.findSingle();
         }
@@ -46,15 +47,15 @@ public class DefaultCrudRepositoryTest
     @Test
     public void nullResultOnFindSingle()
     {
-        String result = new DefaultCrudRepository<String>()
+        DummyEntity result = new DefaultCrudRepository<DummyEntity>()
         {
-            public String findSingle()
+            public DummyEntity findSingle()
             {
                 return findSingle(null);
             }
 
             @Override
-            protected List<String> findMany(CriteriaQuery cq, int startPosition, int maxResult)
+            protected List<DummyEntity> findMany(CriteriaQuery cq, int startPosition, int maxResult)
             {
                 return null;
             }
@@ -65,19 +66,28 @@ public class DefaultCrudRepositoryTest
     @Test
     public void emptyResultOnFindSingle()
     {
-        String result = new DefaultCrudRepository<String>()
+        DummyEntity result = new DefaultCrudRepository<DummyEntity>()
         {
-            public String findSingle()
+            public DummyEntity findSingle()
             {
                 return findSingle(null);
             }
 
             @Override
-            protected List<String> findMany(CriteriaQuery cq, int startPosition, int maxResult)
+            protected List<DummyEntity> findMany(CriteriaQuery cq, int startPosition, int maxResult)
             {
                 return Arrays.asList();
             }
         }.findSingle();
         assertThat(result).isNull();
+    }
+
+    private class DummyEntity implements BaseEntity
+    {
+        @Override
+        public Long getId()
+        {
+            return 1L;
+        }
     }
 }

@@ -1,11 +1,13 @@
 package com.mreapps.zapezy.dao.repository;
 
+import com.mreapps.zapezy.core.entity.BaseEntity;
+
 /**
  * A repository handles crud operations towards a database
  *
  * @param <T> The type of entity the repository handles
  */
-public interface CrudRepository<T>
+public interface CrudRepository<T extends BaseEntity>
 {
     /**
      * @param id The entities unique id

@@ -2,20 +2,13 @@ package com.mreapps.zapezy.dao.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
- *
+ * A user can log on to the application
  */
 @Entity(name = "users")
-public class JpaUser
+public class JpaUser extends AbstractJpaBaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     @Column(name = "email_address")
     private String emailAddress;
 
@@ -27,16 +20,6 @@ public class JpaUser
 
     @Column(name = "last_name")
     private String lastName;
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
 
     public String getEmailAddress()
     {
@@ -83,6 +66,6 @@ public class JpaUser
     {
         return String.format(
                 "JpaUser[id=%d, emailAddress='%s', firstName='%s', lastName='%s']",
-                id, emailAddress, firstName, lastName);
+                getId(), emailAddress, firstName, lastName);
     }
 }

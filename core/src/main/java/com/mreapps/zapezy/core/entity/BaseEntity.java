@@ -1,12 +1,11 @@
-package com.mreapps.zapezy.domain.entity;
+package com.mreapps.zapezy.core.entity;
 
 /**
- * Base interface for all domain entities
+ * Interface for entitites
  */
 public interface BaseEntity
 {
     /**
-     *
      * @return A unique database id of the entity
      */
     Long getId();
