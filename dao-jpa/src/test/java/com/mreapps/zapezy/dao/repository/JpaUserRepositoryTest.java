@@ -17,11 +17,13 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
     public void findByEmailAddress()
     {
         String emailAddress = "user@zapezy.com";
+        String encryptedPassword = "encryptedPassword";
         String lastName = "Ryan";
         String firstName = "Giggs";
 
         JpaUser user = new JpaUser();
         user.setEmailAddress(emailAddress);
+        user.setEncryptedPassword(encryptedPassword);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         userRepository.persist(user);
@@ -30,6 +32,7 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         Assertions.assertThat(user).isNotNull();
         Assertions.assertThat(user.getId()).isNotNull();
         Assertions.assertThat(user.getEmailAddress()).isEqualTo(emailAddress);
+        Assertions.assertThat(user.getEncryptedPassword()).isEqualTo(encryptedPassword);
         Assertions.assertThat(user.getFirstName()).isEqualTo(firstName);
         Assertions.assertThat(user.getLastName()).isEqualTo(lastName);
 

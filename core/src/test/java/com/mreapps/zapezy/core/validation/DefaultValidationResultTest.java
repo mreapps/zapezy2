@@ -55,4 +55,28 @@ public class DefaultValidationResultTest
         assertThat(validationResult.isOk()).isTrue();
         assertThat(validationResult.getAllMessages().size()).isEqualTo(2);
     }
+
+    @Test
+    public void appendValidationResult()
+    {
+        DefaultValidationResult validationResult1 = new DefaultValidationResult();
+        validationResult1.addMessage(new ValidationMessage(ValidationSeverity.CRITICAL, "critical1"));
+
+        DefaultValidationResult validationResult2 = new DefaultValidationResult();
+        validationResult2.addMessage(new ValidationMessage(ValidationSeverity.CRITICAL, "critical2"));
+
+        validationResult1.appendValidationResult(validationResult2);
+        assertThat(validationResult1.getAllMessages().size()).isEqualTo(2);
+    }
+
+    @Test
+    public void appendNullValidationResult()
+    {
+        DefaultValidationResult validationResult1 = new DefaultValidationResult();
+        validationResult1.addMessage(new ValidationMessage(ValidationSeverity.CRITICAL, "critical1"));
+        DefaultValidationResult validationResult2 = null;
+
+        validationResult1.appendValidationResult(validationResult2);
+        assertThat(validationResult1.getAllMessages().size()).isEqualTo(1);
+    }
 }

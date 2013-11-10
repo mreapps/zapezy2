@@ -9,6 +9,7 @@ import com.mreapps.zapezy.dao.repository.JpaUserRepository;
 import com.mreapps.zapezy.domain.entity.User;
 import com.mreapps.zapezy.domain.validator.UserValidator;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -27,6 +28,9 @@ public class DefaultUserValidator implements UserValidator
         if (StringUtils.isBlank(user.getEmailAddress()))
         {
             validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "email_address_must_be_set"));
+        } else if (!EmailValidator.getInstance(true).isValid(user.getEmailAddress()))
+        {
+            validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "email_address_is_not_valid"));
         } else
         {
             JpaUser existingUser = userRepository.findByEmailAddress(user.getEmailAddress());

@@ -19,6 +19,9 @@ public class JpaUser
     @Column(name = "email_address")
     private String emailAddress;
 
+    @Column(name = "encrypted_password")
+    private String encryptedPassword;
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -43,6 +46,16 @@ public class JpaUser
     public void setEmailAddress(String emailAddress)
     {
         this.emailAddress = emailAddress;
+    }
+
+    public String getEncryptedPassword()
+    {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword)
+    {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public String getFirstName()

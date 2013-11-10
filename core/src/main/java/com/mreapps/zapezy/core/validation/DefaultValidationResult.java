@@ -59,4 +59,16 @@ public class DefaultValidationResult implements ValidationResult
             this.ok = false;
         }
     }
+
+    @Override
+    public void appendValidationResult(ValidationResult validationResult)
+    {
+        if (validationResult != null)
+        {
+            for (ValidationMessage validationMessage : validationResult.getAllMessages())
+            {
+                addMessage(validationMessage);
+            }
+        }
+    }
 }

@@ -46,6 +46,19 @@ public class DefaultUserValidatorTest
     }
 
     @Test
+    public void validateNewUserWithInvalidEmailAddress()
+    {
+        User user = new User();
+        user.setEmailAddress("user.zapezy.com");
+        user.setFirstName("Ryan");
+        user.setLastName("Giggs");
+
+        ValidationResult validationResult = userValidator.validateUser(user);
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("email_address_is_not_valid");
+    }
+
+    @Test
     public void validateValidExistingUser()
     {
         User user = new User(1);

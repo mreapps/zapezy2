@@ -32,4 +32,10 @@ public interface ValidationResult
      * @param message The validation message to add
      */
     void addMessage(ValidationMessage message);
+
+    /**
+     * Appends another validation result to this validation result
+     * @param validationResult The validation result to append
+     */
+    void appendValidationResult(ValidationResult validationResult);
 }
