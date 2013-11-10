@@ -1,0 +1,5 @@
+Done  0001    A user must be able to register with email address, first name and last name
+Done  0002    A user must be able to set a self chosen password
+      0003    A user must be able to change its password
+      0004    A user must be connected to a role to enable access restrictions
+      0005    A user must confirm its email address with a confirmation email
