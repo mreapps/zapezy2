@@ -1,5 +1,8 @@
-Done  ZZY-0001    A user must be able to register with email address, first name and last name
-Done  ZZY-0002    A user must be able to set a self chosen password
-Done  ZZY-0003    A user must be able to change its password
-      ZZY-0004    A user must be connected to a role to enable access restrictions
-      ZZY-0005    A user must confirm its email address with a confirmation email
+Done  ZZY-0001    Set up system configuration with maven and sonar                                                      7h
+Done  ZZY-0002    A user must be able to register with email address, first name and last name                          2h
+Done  ZZY-0003    A user must be able to set a self chosen password                                                     60m
+Done  ZZY-0004    A user must be able to change its password                                                            30m
+      ZZY-0005    A user must be connected to a role to enable access restrictions
+      ZZY-0006    A user must confirm its email address with a confirmation email
+      ZZY-0007    A user must be able to change its user details (first name, last name)
+      ZZY-0008    A user must be able to change its email address
