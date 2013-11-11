@@ -6,5 +6,6 @@ Done  ZZY-0005    A user must be connected to a role to enable access restrictio
       ZZY-0006    A user must confirm its email address with a confirmation email
       ZZY-0007    A user must be able to change its user details (first name, last name)
       ZZY-0008    A user must be able to change its email address
-      ZZY-0009    An administrator must be able to deactivate a user
-      ZZY-0010    An administrator must be able to mark a user as deleted
+      ZZY-0009    An administrator must be able to deactivate a user and unable it to log on
+      ZZY-0010    An administrator must be able to re-activate a user
+      ZZY-0011    An administrator must be able to mark a user as deleted
