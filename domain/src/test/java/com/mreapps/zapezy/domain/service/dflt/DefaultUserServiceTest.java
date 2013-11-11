@@ -4,7 +4,9 @@ import com.mreapps.zapezy.core.validation.DefaultValidationResult;
 import com.mreapps.zapezy.core.validation.ValidationMessage;
 import com.mreapps.zapezy.core.validation.ValidationResult;
 import com.mreapps.zapezy.core.validation.ValidationSeverity;
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaRole;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
+import com.mreapps.zapezy.dao.repository.JpaRoleRepository;
 import com.mreapps.zapezy.dao.repository.JpaUserRepository;
 import com.mreapps.zapezy.domain.converter.UserConverter;
 import com.mreapps.zapezy.domain.entity.User;
@@ -27,6 +29,8 @@ public class DefaultUserServiceTest
     @Mock
     private JpaUserRepository userRepository;
     @Mock
+    private JpaRoleRepository roleRepository;
+    @Mock
     private UserValidator userValidator;
     @Mock
     private PasswordValidator passwordValidator;
@@ -42,6 +46,7 @@ public class DefaultUserServiceTest
         defaultUserService = new DefaultUserService();
 
         ReflectionTestUtils.setField(defaultUserService, "userRepository", userRepository);
+        ReflectionTestUtils.setField(defaultUserService, "roleRepository", roleRepository);
         ReflectionTestUtils.setField(defaultUserService, "userValidator", userValidator);
         ReflectionTestUtils.setField(defaultUserService, "passwordValidator", passwordValidator);
         ReflectionTestUtils.setField(defaultUserService, "userConverter", userConverter);
@@ -173,5 +178,53 @@ public class DefaultUserServiceTest
 
         ValidationResult validationResult = defaultUserService.changePassword(emailAddress, oldPassword, newPassword1, newPassword2);
         assertThat(validationResult.isOk()).isTrue();
+    }
+
+    @Test
+    public void setRole()
+    {
+        String emailAddress = "user@zapezy.com";
+        String role = "user";
+
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setEmailAddress(emailAddress);
+        when(userRepository.findByEmailAddress(anyString())).thenReturn(jpaUser);
+
+        JpaRole jpaRole = new JpaRole();
+        jpaRole.setCode(role);
+        when(roleRepository.findByCode(anyString())).thenReturn(jpaRole);
+
+        ValidationResult validationResult = defaultUserService.setRole(emailAddress, role);
+        assertThat(validationResult.isOk()).isTrue();
+    }
+
+    @Test
+    public void setRoleInvalidEmailAddress()
+    {
+        String emailAddress = "user@zapezy.com";
+        String role = "user";
+
+        ValidationResult validationResult = defaultUserService.setRole(emailAddress, role);
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("unknown_email_address_x");
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams().length).isEqualTo(1);
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(emailAddress);
+    }
+
+    @Test
+    public void setRoleInvalidRole()
+    {
+        String emailAddress = "user@zapezy.com";
+        String role = "user";
+
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setEmailAddress(emailAddress);
+        when(userRepository.findByEmailAddress(anyString())).thenReturn(jpaUser);
+
+        ValidationResult validationResult = defaultUserService.setRole(emailAddress, role);
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("unknown_role_x");
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams().length).isEqualTo(1);
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(role);
     }
 }

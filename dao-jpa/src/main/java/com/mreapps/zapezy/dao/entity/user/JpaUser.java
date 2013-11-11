@@ -1,7 +1,11 @@
-package com.mreapps.zapezy.dao.entity;
+package com.mreapps.zapezy.dao.entity.user;
+
+import com.mreapps.zapezy.dao.entity.AbstractJpaBaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * A user can log on to the application
@@ -9,17 +13,25 @@ import javax.persistence.Entity;
 @Entity(name = "users")
 public class JpaUser extends AbstractJpaBaseEntity
 {
-    @Column(name = "email_address")
+    public static final int MAX_EMAIL_LENGTH = 255;
+    public static final int MAX_FIRST_NAME_LENGTH = 40;
+    public static final int MAX_LAST_NAME_LENGTH = 50;
+
+    @Column(name = "email_address", nullable = false, length = MAX_EMAIL_LENGTH)
     private String emailAddress;
 
-    @Column(name = "encrypted_password")
+    @Column(name = "encrypted_password", nullable = false)
     private String encryptedPassword;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false, length = MAX_FIRST_NAME_LENGTH)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false, length = MAX_LAST_NAME_LENGTH)
     private String lastName;
+
+    @ManyToOne
+    @JoinColumn(name = "role_uid", nullable = false)
+    private JpaRole role;
 
     public String getEmailAddress()
     {
@@ -61,11 +73,21 @@ public class JpaUser extends AbstractJpaBaseEntity
         this.lastName = lastName;
     }
 
+    public JpaRole getRole()
+    {
+        return role;
+    }
+
+    public void setRole(JpaRole role)
+    {
+        this.role = role;
+    }
+
     @Override
     public String toString()
     {
         return String.format(
-                "JpaUser[id=%d, emailAddress='%s', firstName='%s', lastName='%s']",
-                getId(), emailAddress, firstName, lastName);
+                "JpaUser[id=%d, emailAddress='%s', firstName='%s', lastName='%s', role='%s']",
+                getId(), emailAddress, firstName, lastName, role.getCode());
     }
 }

@@ -20,6 +20,6 @@
     <context:component-scan base-package="com.mreapps.zapezy.dao.config"/>
     <context:component-scan base-package="com.mreapps.zapezy.dao.repository.dflt"/>
 
-    <bean name="TestBean" class="com.mreapps.zapezy.dao.entity.JpaUser"/>
+    <bean name="TestBean" class="com.mreapps.zapezy.dao.entity.user.JpaUser"/>
 
 </beans>

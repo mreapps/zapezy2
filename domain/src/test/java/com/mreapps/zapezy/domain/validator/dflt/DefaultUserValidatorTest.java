@@ -1,7 +1,7 @@
 package com.mreapps.zapezy.domain.validator.dflt;
 
 import com.mreapps.zapezy.core.validation.ValidationResult;
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
 import com.mreapps.zapezy.dao.repository.JpaUserRepository;
 import com.mreapps.zapezy.domain.entity.User;
 import org.junit.Before;

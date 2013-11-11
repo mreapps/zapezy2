@@ -32,4 +32,12 @@ public interface UserService
      * @return A validation result with messages. If it contains errors, the password has not been changed.
      */
     ValidationResult changePassword(String emailAddress, String oldPassword, String newPassword1, String newPassword2);
+
+    /**
+     * Sets the role for a specific user
+     * @param emailAddress The user email address
+     * @param role The role to set on the user
+     * @return A validation result with messages. If it contains errors, the role has not been set.
+     */
+    ValidationResult setRole(String emailAddress, String role);
 }

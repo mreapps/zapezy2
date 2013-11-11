@@ -4,7 +4,7 @@ import com.mreapps.zapezy.core.validation.DefaultValidationResult;
 import com.mreapps.zapezy.core.validation.ValidationMessage;
 import com.mreapps.zapezy.core.validation.ValidationResult;
 import com.mreapps.zapezy.core.validation.ValidationSeverity;
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
 import com.mreapps.zapezy.dao.repository.JpaUserRepository;
 import com.mreapps.zapezy.domain.entity.User;
 import com.mreapps.zapezy.domain.validator.UserValidator;

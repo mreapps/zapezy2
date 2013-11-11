@@ -10,6 +10,7 @@ public class User extends AbstractBaseEntity implements Serializable
     private String emailAddress;
     private String firstName;
     private String lastName;
+    private String role;
 
     /**
      * Default constructor
@@ -19,7 +20,6 @@ public class User extends AbstractBaseEntity implements Serializable
     }
 
     /**
-     *
      * @param id A unique id for the user. This id is final and cannot be changed
      */
     public User(long id)
@@ -28,7 +28,6 @@ public class User extends AbstractBaseEntity implements Serializable
     }
 
     /**
-     *
      * @return The users email address. This is unique and is used to identify the user
      */
     public String getEmailAddress()
@@ -37,7 +36,6 @@ public class User extends AbstractBaseEntity implements Serializable
     }
 
     /**
-     *
      * @param emailAddress The users email address. This is unique and is used to identify the user
      */
     public void setEmailAddress(String emailAddress)
@@ -46,7 +44,6 @@ public class User extends AbstractBaseEntity implements Serializable
     }
 
     /**
-     *
      * @return The users first name
      */
     public String getFirstName()
@@ -55,7 +52,6 @@ public class User extends AbstractBaseEntity implements Serializable
     }
 
     /**
-     *
      * @param firstName The users first name
      */
     public void setFirstName(String firstName)
@@ -64,7 +60,6 @@ public class User extends AbstractBaseEntity implements Serializable
     }
 
     /**
-     *
      * @return The users last name
      */
     public String getLastName()
@@ -73,11 +68,20 @@ public class User extends AbstractBaseEntity implements Serializable
     }
 
     /**
-     *
      * @param lastName The users last name
      */
     public void setLastName(String lastName)
     {
         this.lastName = lastName;
+    }
+
+    public String getRole()
+    {
+        return role;
+    }
+
+    public void setRole(String role)
+    {
+        this.role = role;
     }
 }

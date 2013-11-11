@@ -1,6 +1,7 @@
 package com.mreapps.zapezy.dao.repository;
 
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaRole;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
 {
     @Autowired
     private JpaUserRepository userRepository;
+
+    @Autowired
+    private JpaRoleRepository roleRepository;
 
     @Test
     public void findByEmailAddress()
@@ -26,6 +30,7 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         user.setEncryptedPassword(encryptedPassword);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setRole(createRole());
         userRepository.persist(user);
 
         user = userRepository.findByEmailAddress(emailAddress);
@@ -37,8 +42,8 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         Assertions.assertThat(user.getLastName()).isEqualTo(lastName);
 
         String toString = String.format(
-                "JpaUser[id=%d, emailAddress='%s', firstName='%s', lastName='%s']",
-                user.getId(), emailAddress, firstName, lastName);
+                "JpaUser[id=%d, emailAddress='%s', firstName='%s', lastName='%s', role='%s']",
+                user.getId(), emailAddress, firstName, lastName, user.getRole().getCode());
         Assertions.assertThat(user.toString()).isEqualTo(toString);
 
         user = userRepository.findByEmailAddress("wrong_email");
@@ -56,8 +61,10 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         JpaUser user = new JpaUser();
         user.setId(id);
         user.setEmailAddress(emailAddress);
+        user.setEncryptedPassword("...");
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setRole(createRole());
         userRepository.merge(user);
 
         user = userRepository.get(id);
@@ -72,8 +79,10 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
 
         JpaUser user = new JpaUser();
         user.setEmailAddress(emailAddress);
+        user.setEncryptedPassword("...");
         user.setFirstName("Ryan");
         user.setLastName("Giggs");
+        user.setRole(createRole());
         userRepository.persist(user);
 
         user = userRepository.findByEmailAddress(emailAddress);
@@ -83,5 +92,14 @@ public class JpaUserRepositoryTest extends AbstractTransactionalJUnit4SpringCont
         userRepository.remove(user);
         user = userRepository.findByEmailAddress(emailAddress);
         Assertions.assertThat(user).isNull();
+    }
+
+    private JpaRole createRole()
+    {
+        JpaRole role = new JpaRole();
+        role.setCode("admin");
+        roleRepository.persist(role);
+
+        return role;
     }
 }

@@ -1,8 +1,10 @@
 package com.mreapps.zapezy.domain.converter.dflt;
 
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
+import com.mreapps.zapezy.dao.repository.JpaRoleRepository;
 import com.mreapps.zapezy.domain.converter.UserConverter;
 import com.mreapps.zapezy.domain.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultUserConverter implements UserConverter
 {
+    @Autowired
+    private JpaRoleRepository roleRepository;
+
     @Override
     public JpaUser convertToDao(User user)
     {
@@ -24,6 +29,7 @@ public class DefaultUserConverter implements UserConverter
         jpaUser.setEmailAddress(user.getEmailAddress());
         jpaUser.setFirstName(user.getFirstName());
         jpaUser.setLastName(user.getLastName());
+        jpaUser.setRole(user.getRole() == null ? null : roleRepository.findByCode(user.getRole()));
 
         return jpaUser;
     }
@@ -48,6 +54,7 @@ public class DefaultUserConverter implements UserConverter
         user.setEmailAddress(jpaUser.getEmailAddress());
         user.setFirstName(jpaUser.getFirstName());
         user.setLastName(jpaUser.getLastName());
+        user.setRole(jpaUser.getRole().getCode());
 
         return user;
     }

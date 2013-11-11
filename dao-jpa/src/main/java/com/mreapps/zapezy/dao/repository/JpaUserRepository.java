@@ -1,9 +1,9 @@
 package com.mreapps.zapezy.dao.repository;
 
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
 
 /**
- * DAO for {@link com.mreapps.zapezy.dao.entity.JpaUser}
+ * DAO for {@link com.mreapps.zapezy.dao.entity.user.JpaUser}
  */
 public interface JpaUserRepository extends CrudRepository<JpaUser>
 {

@@ -1,7 +1,7 @@
 package com.mreapps.zapezy.dao.repository.dflt;
 
-import com.mreapps.zapezy.dao.entity.JpaUser;
-import com.mreapps.zapezy.dao.entity.JpaUser_;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaUser_;
 import com.mreapps.zapezy.dao.repository.JpaUserRepository;
 import org.springframework.stereotype.Repository;
 

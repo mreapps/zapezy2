@@ -1,6 +1,6 @@
 package com.mreapps.zapezy.domain.converter;
 
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
 import com.mreapps.zapezy.domain.entity.User;
 
 /**

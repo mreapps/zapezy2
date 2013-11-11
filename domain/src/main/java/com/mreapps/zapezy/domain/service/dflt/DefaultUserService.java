@@ -4,7 +4,9 @@ import com.mreapps.zapezy.core.validation.DefaultValidationResult;
 import com.mreapps.zapezy.core.validation.ValidationMessage;
 import com.mreapps.zapezy.core.validation.ValidationResult;
 import com.mreapps.zapezy.core.validation.ValidationSeverity;
-import com.mreapps.zapezy.dao.entity.JpaUser;
+import com.mreapps.zapezy.dao.entity.user.JpaRole;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
+import com.mreapps.zapezy.dao.repository.JpaRoleRepository;
 import com.mreapps.zapezy.dao.repository.JpaUserRepository;
 import com.mreapps.zapezy.domain.converter.UserConverter;
 import com.mreapps.zapezy.domain.entity.User;
@@ -27,6 +29,9 @@ public class DefaultUserService implements UserService
 {
     @Autowired
     private JpaUserRepository userRepository;
+
+    @Autowired
+    private JpaRoleRepository roleRepository;
 
     @Autowired
     private UserValidator userValidator;
@@ -89,6 +94,32 @@ public class DefaultUserService implements UserService
             {
                 JpaUser jpaUser = userRepository.findByEmailAddress(emailAddress);
                 setEncryptedPassword(jpaUser, newPassword1);
+                userRepository.merge(jpaUser);
+            }
+        }
+
+        return validationResult;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public ValidationResult setRole(String emailAddress, String role)
+    {
+        ValidationResult validationResult = new DefaultValidationResult();
+
+        final JpaUser jpaUser = userRepository.findByEmailAddress(emailAddress);
+        if (jpaUser == null)
+        {
+            validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "unknown_email_address_x", emailAddress));
+        } else
+        {
+            JpaRole jpaRole = roleRepository.findByCode(role);
+            if (jpaRole == null)
+            {
+                validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "unknown_role_x", role));
+            } else
+            {
+                jpaUser.setRole(jpaRole);
                 userRepository.merge(jpaUser);
             }
         }
