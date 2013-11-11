@@ -40,6 +40,7 @@ public class DefaultUserValidatorTest
         user.setEmailAddress("user@zapezy.com");
         user.setFirstName("Ryan");
         user.setLastName("Giggs");
+        user.setRole("admin");
 
         ValidationResult validationResult = userValidator.validateUser(user);
         assertThat(validationResult.isOk()).isTrue();
@@ -52,6 +53,7 @@ public class DefaultUserValidatorTest
         user.setEmailAddress("user.zapezy.com");
         user.setFirstName("Ryan");
         user.setLastName("Giggs");
+        user.setRole("admin");
 
         ValidationResult validationResult = userValidator.validateUser(user);
         assertThat(validationResult.isOk()).isFalse();
@@ -65,6 +67,7 @@ public class DefaultUserValidatorTest
         user.setEmailAddress("user@zapezy.com");
         user.setFirstName("Ryan");
         user.setLastName("Giggs");
+        user.setRole("admin");
 
         JpaUser existingUser = new JpaUser();
         existingUser.setId(1L);
@@ -81,6 +84,7 @@ public class DefaultUserValidatorTest
         user.setEmailAddress("user@zapezy.com");
         user.setFirstName("Ryan");
         user.setLastName("Giggs");
+        user.setRole("admin");
 
         JpaUser existingUser = new JpaUser();
         ReflectionTestUtils.setField(existingUser, "id", 1L);
@@ -88,6 +92,7 @@ public class DefaultUserValidatorTest
 
         ValidationResult validationResult = userValidator.validateUser(user);
         assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("email_address_is_already_in_use");
     }
 
@@ -97,9 +102,11 @@ public class DefaultUserValidatorTest
         User user = new User();
         user.setFirstName("Ryan");
         user.setLastName("Giggs");
+        user.setRole("admin");
 
         ValidationResult validationResult = userValidator.validateUser(user);
         assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("email_address_must_be_set");
     }
 
@@ -109,9 +116,11 @@ public class DefaultUserValidatorTest
         User user = new User();
         user.setEmailAddress("user@zapezy.com");
         user.setLastName("Giggs");
+        user.setRole("admin");
 
         ValidationResult validationResult = userValidator.validateUser(user);
         assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("first_name_must_be_set");
     }
 
@@ -121,9 +130,25 @@ public class DefaultUserValidatorTest
         User user = new User();
         user.setEmailAddress("user@zapezy.com");
         user.setFirstName("Ryan");
+        user.setRole("admin");
 
         ValidationResult validationResult = userValidator.validateUser(user);
         assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("last_name_must_be_set");
+    }
+
+    @Test
+    public void validateValidUserMissingRole()
+    {
+        User user = new User();
+        user.setEmailAddress("user@zapezy.com");
+        user.setFirstName("Ryan");
+        user.setLastName("Giggs");
+
+        ValidationResult validationResult = userValidator.validateUser(user);
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("role_must_be_set");
     }
 }

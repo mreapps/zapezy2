@@ -54,6 +54,8 @@ public class DefaultUserService implements UserService
         user.setEmailAddress(emailAddress.toLowerCase());
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        // new users should be put into role user by default
+        user.setRole("user");
 
         validationResult = userValidator.validateUser(user);
         validationResult.appendValidationResult(passwordValidator.validatePasswords(password1, password2));

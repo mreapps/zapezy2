@@ -50,6 +50,11 @@ public class DefaultUserValidator implements UserValidator
             validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "last_name_must_be_set"));
         }
 
+        if(user.getRole() == null)
+        {
+            validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "role_must_be_set"));
+        }
+
         return validationResult;
     }
 }
