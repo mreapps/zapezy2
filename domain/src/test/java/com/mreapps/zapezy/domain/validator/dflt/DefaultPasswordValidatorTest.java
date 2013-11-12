@@ -1,6 +1,7 @@
 package com.mreapps.zapezy.domain.validator.dflt;
 
 import com.mreapps.zapezy.core.validation.ValidationResult;
+import com.mreapps.zapezy.dao.entity.user.JpaUser;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -18,7 +19,7 @@ public class DefaultPasswordValidatorTest
         assertThat(validationResult.isOk()).isFalse();
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("password_must_contain_at_least_x_chars");
         assertThat(validationResult.getAllMessages().get(0).getMessageParams().length).isEqualTo(1);
-        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(DefaultPasswordValidator.MIN_PASSWORD_LENGTH);
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(JpaUser.MIN_PASSWORD_LENGTH);
     }
 
     @Test
@@ -30,7 +31,7 @@ public class DefaultPasswordValidatorTest
         assertThat(validationResult.isOk()).isFalse();
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("password_must_contain_at_least_x_chars");
         assertThat(validationResult.getAllMessages().get(0).getMessageParams().length).isEqualTo(1);
-        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(DefaultPasswordValidator.MIN_PASSWORD_LENGTH);
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(JpaUser.MIN_PASSWORD_LENGTH);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class DefaultPasswordValidatorTest
         assertThat(validationResult.isOk()).isFalse();
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("password_must_contain_at_least_x_chars");
         assertThat(validationResult.getAllMessages().get(0).getMessageParams().length).isEqualTo(1);
-        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(DefaultPasswordValidator.MIN_PASSWORD_LENGTH);
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(JpaUser.MIN_PASSWORD_LENGTH);
     }
 
     @Test
@@ -57,7 +58,7 @@ public class DefaultPasswordValidatorTest
         assertThat(validationResult.isOk()).isFalse();
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("password_cannot_contain_more_than_x_chars");
         assertThat(validationResult.getAllMessages().get(0).getMessageParams().length).isEqualTo(1);
-        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(DefaultPasswordValidator.MAX_PASSWORD_LENGTH);
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(JpaUser.MAX_PASSWORD_LENGTH);
     }
 
     @Test

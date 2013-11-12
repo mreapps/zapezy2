@@ -12,4 +12,10 @@ public interface JpaUserRepository extends CrudRepository<JpaUser>
      * @return The user if found, null if not
      */
     JpaUser findByEmailAddress(String emailAddress);
+
+    /**
+     * @param emailConfirmationToken Unique token for a single user
+     * @return The user with the token
+     */
+    JpaUser findByEmailConfirmationToken(String emailConfirmationToken);
 }

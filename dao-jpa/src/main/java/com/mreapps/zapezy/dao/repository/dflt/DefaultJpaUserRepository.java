@@ -33,4 +33,18 @@ public class DefaultJpaUserRepository extends DefaultCrudRepository<JpaUser> imp
 
         return findSingle(cq);
     }
+
+    @Override
+    public JpaUser findByEmailConfirmationToken(String emailConfirmationToken)
+    {
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<JpaUser> cq = cb.createQuery(JpaUser.class);
+        final Root<JpaUser> root = cq.from(JpaUser.class);
+        cq.select(root);
+        cq.where(
+                cb.equal(root.get(JpaUser_.emailConfirmationToken), emailConfirmationToken)
+        );
+
+        return findSingle(cq);
+    }
 }

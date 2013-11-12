@@ -24,7 +24,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
-public class DefaultUserServiceTest
+public class DomainDefaultUserServiceTest
 {
     @Mock
     private JpaUserRepository userRepository;
@@ -37,13 +37,13 @@ public class DefaultUserServiceTest
     @Mock
     private UserConverter userConverter;
 
-    private DefaultUserService defaultUserService;
+    private DefaultDomainUserService defaultUserService;
 
     @Before
     public void setup()
     {
         MockitoAnnotations.initMocks(this);
-        defaultUserService = new DefaultUserService();
+        defaultUserService = new DefaultDomainUserService();
 
         ReflectionTestUtils.setField(defaultUserService, "userRepository", userRepository);
         ReflectionTestUtils.setField(defaultUserService, "roleRepository", roleRepository);
@@ -226,5 +226,54 @@ public class DefaultUserServiceTest
         assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("unknown_role_x");
         assertThat(validationResult.getAllMessages().get(0).getMessageParams().length).isEqualTo(1);
         assertThat(validationResult.getAllMessages().get(0).getMessageParams()[0]).isEqualTo(role);
+    }
+
+    @Test
+    public void confirmEmailAddressMissingToken()
+    {
+        ValidationResult validationResult = defaultUserService.confirmEmailAddress(null);
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
+        assertThat(validationResult.getAllMessages().get(0).getSeverity()).isEqualTo(ValidationSeverity.ERROR);
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("missing_confirmation_token");
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()).isNull();
+    }
+
+    @Test
+    public void confirmEmailAddressInvalidToken()
+    {
+        ValidationResult validationResult = defaultUserService.confirmEmailAddress("invalid_token");
+        assertThat(validationResult.isOk()).isFalse();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
+        assertThat(validationResult.getAllMessages().get(0).getSeverity()).isEqualTo(ValidationSeverity.ERROR);
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("invalid_confirmation_token");
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()).isNull();
+    }
+
+    @Test
+    public void confirmEmailAddressUsedToken()
+    {
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setEmailConfirmed(true);
+        when(userRepository.findByEmailConfirmationToken(anyString())).thenReturn(jpaUser);
+
+        ValidationResult validationResult = defaultUserService.confirmEmailAddress("invalid_token");
+        assertThat(validationResult.isOk()).isTrue();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(1);
+        assertThat(validationResult.getAllMessages().get(0).getSeverity()).isEqualTo(ValidationSeverity.INFO);
+        assertThat(validationResult.getAllMessages().get(0).getMessage()).isEqualTo("email_has_already_been_confirmed");
+        assertThat(validationResult.getAllMessages().get(0).getMessageParams()).isNull();
+    }
+
+    @Test
+    public void confirmEmailAddress()
+    {
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setEmailConfirmed(false);
+        when(userRepository.findByEmailConfirmationToken(anyString())).thenReturn(jpaUser);
+
+        ValidationResult validationResult = defaultUserService.confirmEmailAddress("invalid_token");
+        assertThat(validationResult.isOk()).isTrue();
+        assertThat(validationResult.getAllMessages().size()).isEqualTo(0);
     }
 }

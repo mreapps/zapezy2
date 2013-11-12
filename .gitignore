@@ -6,3 +6,4 @@ dao-jpa/src/main/generated/*
 *.project
 *.settings
 test-output
+service/src/test/resources/email.properties

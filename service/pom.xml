@@ -12,5 +12,35 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.mreapps.zapezy</groupId>
+            <artifactId>zapezy-core</artifactId>
+            <version>${zapezy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mreapps.zapezy</groupId>
+            <artifactId>zapezy-domain</artifactId>
+            <version>${zapezy.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        
     </dependencies>
 </project>

@@ -5,7 +5,7 @@ import com.mreapps.zapezy.core.validation.ValidationResult;
 /**
  * User services
  */
-public interface UserService
+public interface DomainUserService
 {
     /**
      * @param emailAddress The users email address. This cannot be in use on a different user
@@ -35,9 +35,16 @@ public interface UserService
 
     /**
      * Sets the role for a specific user
+     *
      * @param emailAddress The user email address
-     * @param role The role to set on the user
+     * @param role         The role to set on the user
      * @return A validation result with messages. If it contains errors, the role has not been set.
      */
     ValidationResult setRole(String emailAddress, String role);
+
+    /**
+     * @param emailConfirmationToken Token connected to one single user
+     * @return A validation result with messages. If it contains errors, no email address has been confirmed
+     */
+    ValidationResult confirmEmailAddress(String emailConfirmationToken);
 }

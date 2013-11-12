@@ -10,9 +10,10 @@ import com.mreapps.zapezy.dao.repository.JpaRoleRepository;
 import com.mreapps.zapezy.dao.repository.JpaUserRepository;
 import com.mreapps.zapezy.domain.converter.UserConverter;
 import com.mreapps.zapezy.domain.entity.User;
-import com.mreapps.zapezy.domain.service.UserService;
+import com.mreapps.zapezy.domain.service.DomainUserService;
 import com.mreapps.zapezy.domain.validator.PasswordValidator;
 import com.mreapps.zapezy.domain.validator.UserValidator;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.jasypt.util.password.StrongPasswordEncryptor;
@@ -20,12 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 /**
  *
  */
 @Service
 @Transactional(readOnly = true)
-public class DefaultUserService implements UserService
+public class DefaultDomainUserService implements DomainUserService
 {
     @Autowired
     private JpaUserRepository userRepository;
@@ -56,12 +59,15 @@ public class DefaultUserService implements UserService
         user.setLastName(lastName);
         // new users should be put into role user by default
         user.setRole("user");
+        user.setEmailConfirmationToken(RandomStringUtils.randomAlphanumeric(JpaUser.MAX_TOKEN_LENGTH));
+        user.setEmailConfirmed(false);
 
         validationResult = userValidator.validateUser(user);
         validationResult.appendValidationResult(passwordValidator.validatePasswords(password1, password2));
         if (validationResult.isOk())
         {
             JpaUser jpaUser = userConverter.convertToDao(user);
+            jpaUser.setUserRegisteredDate(new Date());
             setEncryptedPassword(jpaUser, password1);
             userRepository.persist(jpaUser);
         }
@@ -122,6 +128,35 @@ public class DefaultUserService implements UserService
             } else
             {
                 jpaUser.setRole(jpaRole);
+                userRepository.merge(jpaUser);
+            }
+        }
+
+        return validationResult;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public ValidationResult confirmEmailAddress(String emailConfirmationToken)
+    {
+        ValidationResult validationResult = new DefaultValidationResult();
+
+        if (StringUtils.isBlank(emailConfirmationToken))
+        {
+            validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "missing_confirmation_token"));
+        } else
+        {
+            JpaUser jpaUser = userRepository.findByEmailConfirmationToken(emailConfirmationToken);
+            if (jpaUser == null)
+            {
+                validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "invalid_confirmation_token"));
+            } else if (jpaUser.isEmailConfirmed())
+            {
+                validationResult.addMessage(new ValidationMessage(ValidationSeverity.INFO, "email_has_already_been_confirmed"));
+            } else
+            {
+                jpaUser.setEmailConfirmed(true);
+                jpaUser.setEmailConfirmedDate(new Date());
                 userRepository.merge(jpaUser);
             }
         }

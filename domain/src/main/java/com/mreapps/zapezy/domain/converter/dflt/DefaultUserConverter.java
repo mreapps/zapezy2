@@ -30,6 +30,8 @@ public class DefaultUserConverter implements UserConverter
         jpaUser.setFirstName(user.getFirstName());
         jpaUser.setLastName(user.getLastName());
         jpaUser.setRole(user.getRole() == null ? null : roleRepository.findByCode(user.getRole()));
+        jpaUser.setEmailConfirmationToken(user.getEmailConfirmationToken());
+        jpaUser.setEmailConfirmed(user.isEmailConfirmed());
 
         return jpaUser;
     }
@@ -55,6 +57,8 @@ public class DefaultUserConverter implements UserConverter
         user.setFirstName(jpaUser.getFirstName());
         user.setLastName(jpaUser.getLastName());
         user.setRole(jpaUser.getRole().getCode());
+        user.setEmailConfirmationToken(jpaUser.getEmailConfirmationToken());
+        user.setEmailConfirmed(jpaUser.isEmailConfirmed());
 
         return user;
     }

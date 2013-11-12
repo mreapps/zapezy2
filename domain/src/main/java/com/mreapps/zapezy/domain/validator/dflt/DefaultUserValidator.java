@@ -25,36 +25,63 @@ public class DefaultUserValidator implements UserValidator
     {
         ValidationResult validationResult = new DefaultValidationResult();
 
-        if (StringUtils.isBlank(user.getEmailAddress()))
+        validateEmailAddress(validationResult, user.getId(), user.getEmailAddress());
+        validateFirstName(validationResult, user.getFirstName());
+        validateLastName(validationResult, user.getLastName());
+        validateRole(validationResult, user.getRole());
+
+        return validationResult;
+    }
+
+    private void validateEmailAddress(ValidationResult validationResult, Long userId, String emailAddress)
+    {
+        if (StringUtils.isBlank(emailAddress))
         {
             validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "email_address_must_be_set"));
-        } else if (!EmailValidator.getInstance(true).isValid(user.getEmailAddress()))
+        } else if (emailAddress.length() > JpaUser.MAX_EMAIL_LENGTH)
+        {
+            validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "email_address_cannot_contain_more_than_x_chars", JpaUser.MAX_EMAIL_LENGTH));
+        } else if (!EmailValidator.getInstance(true).isValid(emailAddress))
         {
             validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "email_address_is_not_valid"));
         } else
         {
-            JpaUser existingUser = userRepository.findByEmailAddress(user.getEmailAddress());
-            if (existingUser != null && !existingUser.getId().equals(user.getId()))
+            JpaUser existingUser = userRepository.findByEmailAddress(emailAddress);
+            if (existingUser != null && !existingUser.getId().equals(userId))
             {
                 validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "email_address_is_already_in_use"));
             }
         }
+    }
 
-        if (StringUtils.isBlank(user.getFirstName()))
+    private void validateFirstName(ValidationResult validationResult, String firstName)
+    {
+        if (StringUtils.isBlank(firstName))
         {
             validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "first_name_must_be_set"));
+        } else if (firstName.length() > JpaUser.MAX_FIRST_NAME_LENGTH)
+        {
+            validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "first_name_cannot_contain_more_than_x_chars", JpaUser.MAX_FIRST_NAME_LENGTH));
         }
+    }
 
-        if (StringUtils.isBlank(user.getLastName()))
+    private void validateLastName(ValidationResult validationResult, String lastName)
+    {
+
+        if (StringUtils.isBlank(lastName))
         {
             validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "last_name_must_be_set"));
+        } else if (lastName.length() > JpaUser.MAX_LAST_NAME_LENGTH)
+        {
+            validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "last_name_cannot_contain_more_than_x_chars", JpaUser.MAX_LAST_NAME_LENGTH));
         }
+    }
 
-        if(user.getRole() == null)
+    private void validateRole(ValidationResult validationResult, String role)
+    {
+        if (StringUtils.isBlank(role))
         {
             validationResult.addMessage(new ValidationMessage(ValidationSeverity.ERROR, "role_must_be_set"));
         }
-
-        return validationResult;
     }
 }

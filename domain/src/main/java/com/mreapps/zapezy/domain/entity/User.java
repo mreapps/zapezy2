@@ -7,10 +7,14 @@ import java.io.Serializable;
  */
 public class User extends AbstractBaseEntity implements Serializable
 {
+    private static final long serialVersionUID = -4030934278952958273L;
+
     private String emailAddress;
     private String firstName;
     private String lastName;
     private String role;
+    private String emailConfirmationToken;
+    private boolean emailConfirmed;
 
     /**
      * Default constructor
@@ -83,5 +87,25 @@ public class User extends AbstractBaseEntity implements Serializable
     public void setRole(String role)
     {
         this.role = role;
+    }
+
+    public String getEmailConfirmationToken()
+    {
+        return emailConfirmationToken;
+    }
+
+    public void setEmailConfirmationToken(String emailConfirmationToken)
+    {
+        this.emailConfirmationToken = emailConfirmationToken;
+    }
+
+    public boolean isEmailConfirmed()
+    {
+        return emailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed)
+    {
+        this.emailConfirmed = emailConfirmed;
     }
 }

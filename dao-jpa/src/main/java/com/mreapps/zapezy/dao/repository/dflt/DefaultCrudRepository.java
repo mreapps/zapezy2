@@ -53,7 +53,7 @@ public abstract class DefaultCrudRepository<T extends BaseEntity> implements Cru
     }
 
     @Override
-    public T get(long id)
+    public final T get(long id)
     {
         return entityManager.find(type, id);
     }
