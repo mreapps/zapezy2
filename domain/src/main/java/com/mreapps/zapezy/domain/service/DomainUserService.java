@@ -1,6 +1,7 @@
 package com.mreapps.zapezy.domain.service;
 
 import com.mreapps.zapezy.core.validation.ValidationResult;
+import com.mreapps.zapezy.domain.entity.User;
 
 /**
  * User services
@@ -47,4 +48,10 @@ public interface DomainUserService
      * @return A validation result with messages. If it contains errors, no email address has been confirmed
      */
     ValidationResult confirmEmailAddress(String emailConfirmationToken);
+
+    /**
+     * @param emailAddress The users email address. Used for looking up the user
+     * @return The user
+     */
+    User findUserDetails(String emailAddress);
 }

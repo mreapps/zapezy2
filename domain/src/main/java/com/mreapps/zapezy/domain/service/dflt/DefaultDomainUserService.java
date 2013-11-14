@@ -164,6 +164,15 @@ public class DefaultDomainUserService implements DomainUserService
         return validationResult;
     }
 
+    @Override
+    public User findUserDetails(String emailAddress)
+    {
+        Validate.notNull(emailAddress, "emailAddress: null");
+
+        JpaUser jpaUser = userRepository.findByEmailAddress(emailAddress);
+        return userConverter.convertToDomain(jpaUser);
+    }
+
     private void setEncryptedPassword(JpaUser jpaUser, String password)
     {
         jpaUser.setEncryptedPassword(new StrongPasswordEncryptor().encryptPassword(password.trim()));

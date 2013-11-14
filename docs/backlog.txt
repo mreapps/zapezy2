@@ -3,13 +3,14 @@ Done  ZZY-0002    A user must be able to register with email address, first name
 Done  ZZY-0003    A user must be able to set a self chosen password                                                     60m
 Done  ZZY-0004    A user must be able to change its password                                                            30m
 Done  ZZY-0005    A user must be connected to a role to enable access restrictions                                      90m
-Done  ZZY-0006    A user must confirm its email address with a confirmation email                                       3h
+Done  ZZY-0006    A user must confirm its email address with a confirmation email                                       4h
       ZZY-0007    A user must be able to change its user details (first name, last name)
       ZZY-0008    A user must be able to change its email address (requires new activation email)
       ZZY-0009    An administrator must be able to deactivate a user making it unable to log on
       ZZY-0010    An administrator must be able to re-activate a user
       ZZY-0011    An administrator must be able to mark a user as deleted
+      ZZY-0012    A user must be able to reset its password
 
 
 -----------------------------------------------------------------------------------------------------------------------------
-Total time spent                                                                                                        15h
+Total time spent                                                                                                        16h

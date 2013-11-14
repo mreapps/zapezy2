@@ -276,4 +276,24 @@ public class DomainDefaultUserServiceTest
         assertThat(validationResult.isOk()).isTrue();
         assertThat(validationResult.getAllMessages().size()).isEqualTo(0);
     }
+
+    @Test
+    public void findUserDetails()
+    {
+        String emailAddress = "user@zapezy.com";
+        JpaUser jpaUser = new JpaUser();
+        jpaUser.setId(1L);
+        jpaUser.setEmailAddress(emailAddress);
+        when(userRepository.findByEmailAddress(eq(emailAddress))).thenReturn(jpaUser);
+
+        User user = new User(jpaUser.getId());
+        user.setEmailAddress(emailAddress);
+
+        when(userConverter.convertToDomain(eq(jpaUser))).thenReturn(user);
+
+        user = defaultUserService.findUserDetails(emailAddress);
+        assertThat(user).isNotNull();
+        assertThat(user.getId()).isEqualTo(1);
+        assertThat(user.getEmailAddress()).isEqualTo(jpaUser.getEmailAddress());
+    }
 }
